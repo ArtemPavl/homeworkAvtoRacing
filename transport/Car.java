@@ -2,24 +2,7 @@ package transport;
 
 import java.time.LocalDate;
 
-public class Car {
-
-//    В классе car создайте вложенный класс «Страховка» (**insurance**) с параметрами:
-//
-//    «Срок действия» страховки,
-//    «Стоимость» страховки,
-//    «Номер» страховки.
-//
-//    Данные параметры неизменяемые. Добавьте ко всем новым полям проверку данных,
-//    что параметры не пустые, не равны null и содержат корректные данные.
-//
-//    Добавьте метод проверки срока годности страховки — не просрочена ли она.
-//    Если страховка просрочена, то в консоль должно выводится предупреждающее сообщение о том,
-//    что нужно срочно ехать оформлять новую страховку. Если страховка еще действует, то никаких
-//    сообщений выводить не нужно.
-//
-//    Добавьте метод проверки, что номер страховки содержит 9 знаков.
-//    Если знаков больше или меньше, то вывести сообщение "Номер страховки некорректный!".
+public class Car extends Transport{
 
     public class Insurance{
 
@@ -132,13 +115,7 @@ public class Car {
         }
     }
 
-
-    private String brand;
-    private String model;
     private double engineVolume;
-    private String color;
-    private int year;
-    private String country;
     private String transmission;
     private String bodyType;
     private String registrationNumber;
@@ -149,42 +126,13 @@ public class Car {
 
     public Car(String brand, String model, double engineVolume, String color,
                int year, String country, String transmission, String bodyType,
-               String registrationNumber, int numberOfSeats, String tires){
-
-        if (year > 0){
-            this.year = year;
-        }else {
-            this.year = 2000;
-        }
+               String registrationNumber, int numberOfSeats, String tires, int maxSpeed, String fuelType){
+        super(brand, model, color, year, country, maxSpeed, fuelType);
 
         if (engineVolume > 0){
             this.engineVolume = engineVolume;
         }else {
             this.engineVolume = 1.5;
-        }
-
-        if (brand != null && !brand.isEmpty() && !brand.isBlank()){
-            this.brand = brand;
-        }else {
-            this.brand = "default";
-        }
-
-        if (model != null && !model.isEmpty() && !model.isBlank()){
-            this.model = model;
-        }else {
-            this.model = "default";
-        }
-
-        if (color != null && !color.isEmpty() && !color.isBlank()){
-            this.color = color;
-        }else {
-            this.color = "белый";
-        }
-
-        if (country != null && !country.isEmpty() && !country.isBlank()){
-            this.country = country;
-        }else {
-            this.country = "default";
         }
 
         if (transmission != null && !transmission.isEmpty() && !transmission.isBlank()){
@@ -238,11 +186,19 @@ public class Car {
         }
     }
 
+    @Override
+    public void refill() {
+        if (getFuelType().equalsIgnoreCase("бензин")){
+            System.out.println("Заправить машину бензином");
+        }else if(getFuelType().equalsIgnoreCase("дизель")){
+            System.out.println("Заправить машину дизелем");
+        }else {
+            System.out.println("Заправить машину на электропарковке");
+        }
+    }
+
     public  String toString(){
-        return "\n" + this.brand + " " + this.model +
-                "\nГод выпуска: " + this.year + " год" +
-                "\nСтрана: " + this.country +
-                "\nЦвет: " + this.color +
+        return super.toString() +
                 "\nОбъем двигателя: " + this.engineVolume + " л." +
                 "\nКоробка передач: " + this.transmission +
                 "\nТип кузова: " + this.bodyType +
@@ -260,18 +216,6 @@ public class Car {
             this.engineVolume = engineVolume;
         }else {
             this.engineVolume = 1.5;
-        }
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        if (color != null && !color.isEmpty() && !color.isBlank()){
-            this.color = color;
-        }else {
-            this.color = "белый";
         }
     }
 
@@ -309,22 +253,6 @@ public class Car {
         }else {
             this.tires = "default";
         };
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public String getCountry() {
-        return country;
     }
 
     public String getBodyType() {
