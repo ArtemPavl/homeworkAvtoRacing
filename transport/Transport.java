@@ -1,21 +1,21 @@
 package transport;
 
-public abstract class Transport {
+import java.sql.Driver;
+import java.util.Objects;
+
+public abstract class Transport<T> {
 
     private String brand;
     private String model;
-    private String color;
-    private int year;
-    private String country;
-    private int maxSpeed;
-    private String fuelType;
+    private double engineVolume;
+    private Driver driver;
 
-    public Transport(String brand, String model, String color, int year, String country, int maxSpeed, String fuelType) {
+    public Transport(String brand, String model, double engineVolume) {
 
-        if (fuelType != null && !fuelType.isEmpty() && !fuelType.isBlank()){
-            this.fuelType = fuelType;
+        if (engineVolume > 0){
+            this.engineVolume = engineVolume;
         }else {
-            this.fuelType = "дизель";
+            this.engineVolume = 1.5;
         }
 
         if (brand != null && !brand.isEmpty() && !brand.isBlank()){
@@ -29,30 +29,6 @@ public abstract class Transport {
         }else {
             this.model = "default";
         }
-
-        if (color != null && !color.isEmpty() && !color.isBlank()){
-            this.color = color;
-        }else {
-            this.color = "белый";
-        }
-
-        if (country != null && !country.isEmpty() && !country.isBlank()){
-            this.country = country;
-        }else {
-            this.country = "default";
-        }
-
-        if (year > 0){
-            this.year = year;
-        }else {
-            this.year = 2000;
-        }
-
-        if (maxSpeed > 0){
-            this.maxSpeed = maxSpeed;
-        }else {
-            this.maxSpeed = 180;
-        }
     }
 
     public String getBrand() {
@@ -63,52 +39,43 @@ public abstract class Transport {
         return model;
     }
 
-    public String getColor() {
-        return color;
+    public double getEngineVolume() {
+        return engineVolume;
     }
 
-    public void setColor(String color) {
-        if (color != null && !color.isEmpty() && !color.isBlank()){
-            this.color = color;
+    public void setEngineVolume(double engineVolume) {
+        if (engineVolume > 0){
+            this.engineVolume = engineVolume;
         }else {
-            this.color = "белый";
+            this.engineVolume = 1.5;
         }
     }
 
-    public abstract void refill();
-
-    public int getYear() {
-        return year;
+    public void start(){
+        System.out.println(getBrand() + " поехал");
     }
 
-    public String getCountry() {
-        return country;
+    public void stop(){
+        System.out.println(getBrand() + " остаовился");
     }
 
-
-    public int getMaxSpeed() {
-        return maxSpeed;
-    }
-
-    public void setMaxSpeed(int maxSpeed) {
-        if (maxSpeed > 0){
-            this.maxSpeed = maxSpeed;
-        }else {
-            this.maxSpeed = 180;
-        }
-    }
-
-    public String getFuelType() {
-        return fuelType;
-    }
 
     public  String toString(){
         return "\n" + this.brand +
                 "\nМодель: " + this.model +
-                "\nГод выпуска: " + this.year + " год" +
-                "\nСтрана: " + this.country +
-                "\nЦвет: " + this.color +
-                "\nМаксимальная скорость: " + this.maxSpeed +
-                "\nТип топлива: " + this.fuelType;
+                "\nГод выпуска: " + this.engineVolume;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Transport<T> transport = (Transport<T>) o;
+        return Double.compare(transport.engineVolume, engineVolume) == 0 && Objects.equals(brand, transport.brand) && Objects.equals(model, transport.model);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(brand, model, engineVolume);
     }
 }
